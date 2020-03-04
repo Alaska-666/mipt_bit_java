@@ -1,27 +1,27 @@
 import java.util.HashMap;
 import java.util.Map;
 
-public class MyCountMap<T> implements CountMap<T>{
-    private Map<T, Integer> myMap = new HashMap<>();
+public class MyCountMap<K> implements CountMap<K>{
+    private HashMap<K, Integer> myMap = new HashMap<>();
 
     @Override
-    public void add(T t) {
-        if (myMap.containsKey(t)) {
-            myMap.put(t, myMap.get(t) + 1);
+    public void add(K key) {
+        if (myMap.containsKey(key)) {
+            myMap.put(key, myMap.get(key) + 1);
         } else {
-            myMap.put(t, 1);
+            myMap.put(key, 1);
         }
     }
 
     @Override
-    public int getCount(T t) {
-        return myMap.getOrDefault(t, 0);
+    public int getCount(K key) {
+        return myMap.getOrDefault(key, 0);
     }
 
     @Override
-    public int remove(T t) {
-        int count = getCount(t);
-        myMap.remove(t);
+    public int remove(K key) {
+        int count = getCount(key);
+        myMap.remove(key);
         return count;
     }
 
@@ -31,8 +31,8 @@ public class MyCountMap<T> implements CountMap<T>{
     }
 
     @Override
-    public void addAll(CountMap<T> source) {
-        for (Map.Entry<T, Integer> entry: source.toMap().entrySet()) {
+    public void addAll(CountMap<? extends K> source) {
+        for (Map.Entry<? extends K, Integer> entry: source.toMap().entrySet()) {
             if (myMap.containsKey(entry.getKey())) {
                 myMap.put(entry.getKey(), myMap.get(entry.getKey()) + entry.getValue());
             } else {
@@ -42,12 +42,12 @@ public class MyCountMap<T> implements CountMap<T>{
     }
 
     @Override
-    public Map<T, Integer> toMap() {
-        return myMap;
+    public Map<K, Integer> toMap() {
+        return (Map<K, Integer>) myMap.clone();
     }
 
     @Override
-    public void toMap(Map destination) {
-        destination = myMap;
+    public void toMap(Map<K, Integer> destination) {
+        destination = (Map<K, Integer>) myMap.clone();
     }
 }

@@ -1,18 +1,18 @@
 import java.util.Map;
 
-public interface CountMap<T> {
-    void add(T t);
+public interface CountMap<K> {
+    void add(K key);
 
-    int getCount(T t);
+    int getCount(K key);
 
-    int remove(T t);
+    int remove(K key);
 
     int size();
 
-    void addAll(CountMap<T> source);
+    void addAll(CountMap<? extends K> source);
 
-    Map<T, Integer> toMap();
+    Map<K, Integer> toMap();
 
-    void toMap(Map<T, Integer> destination);
+    void toMap(Map<K, Integer> destination);
 }
 
