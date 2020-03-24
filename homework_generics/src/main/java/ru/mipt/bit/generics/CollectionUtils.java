@@ -1,3 +1,5 @@
+package ru.mipt.bit.generics;
+
 import java.util.*;
 
 public class CollectionUtils {

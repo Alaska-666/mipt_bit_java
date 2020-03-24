@@ -1,7 +1,11 @@
+package ru.mipt.bit.generics;
+
+import ru.mipt.bit.generics.CountMap;
+
 import java.util.HashMap;
 import java.util.Map;
 
-public class MyCountMap<K> implements CountMap<K>{
+public class MyCountMap<K> implements CountMap<K> {
     private HashMap<K, Integer> myMap = new HashMap<>();
 
     @Override
