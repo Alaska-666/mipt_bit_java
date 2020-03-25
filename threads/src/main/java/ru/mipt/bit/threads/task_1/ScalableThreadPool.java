@@ -11,13 +11,14 @@ public class ScalableThreadPool implements ThreadPool {
     private final int minNumThreads;
     private final int maxNumThreads;
     private final Runnable func;
+    private volatile boolean isFinished = false;
 
     public ScalableThreadPool(int minNumThreads, int maxNumThreads) {
         this.minNumThreads = minNumThreads;
         this.maxNumThreads = maxNumThreads;
         this.threads = new ArrayList<>();
         this.func = () -> {
-            while (true) {
+            while (!isFinished) {
                 synchronized (tasks) {
                     if (tasks.isEmpty() && this.threads.size() > this.minNumThreads) {
                         threads.remove(Thread.currentThread());
