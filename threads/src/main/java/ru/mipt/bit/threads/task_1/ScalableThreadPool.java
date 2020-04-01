@@ -19,6 +19,7 @@ public class ScalableThreadPool implements ThreadPool {
         this.threads = new ArrayList<>();
         this.func = () -> {
             while (!isFinished) {
+                Runnable task;
                 synchronized (tasks) {
                     if (tasks.isEmpty() && this.threads.size() > this.minNumThreads) {
                         threads.remove(Thread.currentThread());
@@ -29,7 +30,12 @@ public class ScalableThreadPool implements ThreadPool {
                             wait();
                         } catch (InterruptedException ignored) {}
                     }
-                    tasks.poll().run();
+                    task = tasks.poll();
+                }
+                try {
+                    task.run();
+                } catch (Exception exception) {
+                    System.out.println(exception.getMessage());
                 }
             }
         };

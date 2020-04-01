@@ -10,13 +10,19 @@ public class FixedThreadPool implements ThreadPool {
     public FixedThreadPool(int numThreads) {
         Runnable func = () -> {
             while (!isFinished) {
+                Runnable task;
                 synchronized (tasks) {
                     while (tasks.isEmpty()) {
                         try {
                             wait();
                         } catch (InterruptedException ignored) {}
                     }
-                    tasks.poll().run();
+                    task = tasks.poll();
+                }
+                try {
+                    task.run();
+                } catch (Exception exception) {
+                    System.out.println(exception.getMessage());
                 }
             }
         };

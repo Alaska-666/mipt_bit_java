@@ -4,7 +4,7 @@ import java.util.concurrent.Callable;
 
 public class MyTask<T> implements Task<T> {
     private final Callable<? extends T> callable;
-    private T result = null;
+    private volatile T result = null;
 
     public MyTask(Callable<? extends T> callable) {
         this.callable = callable;
@@ -12,8 +12,8 @@ public class MyTask<T> implements Task<T> {
 
     @Override
     public T get() throws Exception {
-        if (result != null) return result;
         synchronized (callable) {
+            if (result != null) return result;
             try {
                 result = callable.call();
             } catch (RuntimeException runtimeException) {
